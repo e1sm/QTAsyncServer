@@ -1,9 +1,10 @@
 #include "ctask.h"
+#include "cserver.h"
 #include <QDebug>
 
-CTask::CTask()
+CTask::CTask(QObject *parent)
 {
-    qDebug() << "CTask()";
+    this->parent = parent;
 }
 
 // When the thread pool kicks up
@@ -16,6 +17,12 @@ CTask::CTask()
 void CTask::run()
 {
     // time consumer
+    QMutexLocker locker(&mutex);
+    CServer *srv = (CServer *)parent;
+    qDebug() << " 22 " << srv->tm;
+    srv->tm = 5;
+
+    qDebug() << "CTask()";
 
     qDebug() << "Task started";
 

@@ -10,6 +10,7 @@ class CServer : public QTcpServer
 {
     Q_OBJECT
 public:
+    int tm;
     explicit CServer(QObject *parent = 0);
     void startServer();
 

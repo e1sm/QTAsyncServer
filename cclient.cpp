@@ -1,4 +1,5 @@
 #include "cclient.h"
+#include "cserver.h"
 
 CClient::CClient(QObject *parent) :
     QObject(parent)
@@ -20,6 +21,9 @@ void CClient::setSocket(qintptr descriptor)
     socket->setSocketDescriptor(descriptor);
 
     qDebug() << " Client connected at " << descriptor;
+
+    CServer *srv = (CServer *)this->parent();
+    qDebug() << " 11 " << srv->tm;
 }
 
 
@@ -43,10 +47,16 @@ void CClient::disconnected()
 void CClient::readyRead()
 {
     qDebug() << "MyClient::readyRead()";
-    qDebug() << socket->readAll();
+    QByteArray baInput = socket->readAll();
+    qDebug() << baInput;
+
+    if (baInput == QByteArray("quit\r\n")){
+        socket->close();
+        return;
+    }
 
     // Time consumer
-    CTask *task = new CTask();
+    CTask *task = new CTask(this->parent());
     task->setAutoDelete(true);
 
     // using queued connection
