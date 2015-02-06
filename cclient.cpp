@@ -9,7 +9,7 @@ CClient::CClient(QObject *parent) :
 
 void CClient::setSocket(qintptr descriptor)
 {
-    // make a new socket
+    // make new socket
     socket = new QTcpSocket(this);
 
     qDebug() << "A new socket created!";
@@ -20,6 +20,7 @@ void CClient::setSocket(qintptr descriptor)
 
     socket->setSocketDescriptor(descriptor);
 
+    qDebug() << " Client connected at " << descriptor;
     qDebug() << " Client connected at " << descriptor;
 
     CServer *srv = (CServer *)this->parent();
